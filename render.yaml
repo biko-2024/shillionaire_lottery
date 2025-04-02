@@ -1,0 +1,19 @@
+services:
+  - type: worker
+    name: lottery-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python unilotto_bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_CHAT_ID
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: PAYMENT_NUMBER
+        sync: false
+      - key: PAYMENT_NUMBER2
+        sync: false
+      - key: ACCOUNT_NUMBER
+        sync: false 
