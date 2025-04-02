@@ -2,14 +2,22 @@ import telebot
 from telebot import types
 import random
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+import time
+import sys
+import requests.exceptions
+
+# Load environment variables
+load_dotenv()
 
 # ===== CONFIG =====
-BOT_TOKEN = "8061689354:AAGdBzLjVBEpt9mLPiaeSM2Mu06AwpBi7rs"
-ADMIN_CHAT_ID = 1790327982  # Your Telegram ID
-ADMIN_USERNAME = "@bikila2022"  # Your Telegram username
-PAYMENT_NUMBER = "+251912345678"  # Your Telebirr number
-PAYMENT_NUMBER2 = "+251713115368"  # Your Telebirr number
-ACCOUNT_NUMBER = "1000496832877"  # Your account number
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID"))
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
+PAYMENT_NUMBER = os.getenv("PAYMENT_NUMBER")
+PAYMENT_NUMBER2 = os.getenv("PAYMENT_NUMBER2")
+ACCOUNT_NUMBER = os.getenv("ACCOUNT_NUMBER")
 TICKET_PRICE = 10  # ETB
 ADMIN_COMMISSION = 0.10  # 10%
 
@@ -463,4 +471,20 @@ def show_buyers_list(message):
 # ===== RUN BOT =====
 if __name__ == "__main__":
     print("🤖 Lottery Bot is running...")
-    bot.polling()
+    
+    while True:
+        try:
+            print("Starting bot polling...")
+            bot.polling(none_stop=True, interval=1, timeout=60)
+        except requests.exceptions.ReadTimeout:
+            print("Timeout occurred. Restarting bot...")
+            time.sleep(10)
+            continue
+        except requests.exceptions.ConnectionError:
+            print("Connection error occurred. Restarting bot...")
+            time.sleep(10)
+            continue
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            time.sleep(10)
+            continue

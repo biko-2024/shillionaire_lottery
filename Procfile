@@ -1,0 +1,1 @@
+worker: python unilotto_bot.py 
